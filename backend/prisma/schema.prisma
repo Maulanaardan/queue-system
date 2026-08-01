@@ -1,0 +1,36 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum QueueStatus {
+  waiting
+  called
+  skipped
+  done
+}
+
+enum Role {
+  admin
+  cashier
+}
+
+model Queue {
+  id           Int         @id @default(autoincrement())
+  queue_number Int
+  queue_status QueueStatus
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  called_at    DateTime?
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String
+  password   String
+  role       Role
+  created_at DateTime @default(now())
+}
