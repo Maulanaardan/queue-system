@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import authRoutes from "./routes/authRoute";
+import queueRoutes from "./routes/queueRoute";
 
 const app = express();
 app.use(express.json());
@@ -9,6 +10,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/queues", queueRoutes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error("UNHANDLED ERROR:", err);
