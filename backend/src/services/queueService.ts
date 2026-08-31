@@ -5,6 +5,7 @@ import "dotenv/config";
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
+//tambah antrian
 export async function takeQueue() {
   // 1. ambil nomor antrian terakhir
   const last = await prisma.queue.findFirst({
@@ -23,4 +24,16 @@ export async function takeQueue() {
   });
 
   return queue;
+}
+
+//lihat antrian
+export async function getQueue() {
+  const allNumber = await prisma.queue.findMany()
+  return allNumber
+}
+
+//lihat status nomor tertentu
+export async function status(id: number) {
+  const statusNumber = await prisma.queue.findUnique({ where: { id } })
+  return statusNumber
 }
