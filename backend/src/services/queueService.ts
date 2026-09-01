@@ -37,3 +37,23 @@ export async function status(id: number) {
   const statusNumber = await prisma.queue.findUnique({ where: { id } })
   return statusNumber
 }
+
+//next antrian
+export async function  nextNumber() {
+  const  calledNumber = await prisma.queue.findFirst({
+    where: {queue_status :"waiting"},
+    orderBy: {queue_number: "asc"}
+  })
+
+  if (!calledNumber) {
+    throw new Error("Tidak ada antrian yang menunggu");
+  }
+    
+  const updateNumber = await prisma.queue.update({
+    where: { id: calledNumber.id },
+    data : {
+      queue_status: "called", called_at: new Date() 
+    }
+  })
+  return updateNumber;
+}
