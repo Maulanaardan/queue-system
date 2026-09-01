@@ -57,3 +57,13 @@ export async function  nextNumber() {
   })
   return updateNumber;
 }
+
+export async function skippedNumber(id: number) {
+  const updateStatus  = await prisma.queue.update({
+    where : {id},
+    data : {
+      queue_status : "skipped"
+    }
+  })
+  return updateStatus
+}

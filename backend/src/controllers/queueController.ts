@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { takeQueue, getQueue, status, nextNumber } from "../services/queueService";
+import { takeQueue, getQueue, status, nextNumber, skippedNumber } from "../services/queueService";
 
 export async function createQueue(req: Request, res: Response) {
   try {
@@ -38,6 +38,17 @@ export async function nextNumberCalled(req: Request, res: Response) {
     return res.status(200).json({ message: "Next number:", data: result });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Gagal Menampilkan nomor berikutnya";
+    return res.status(400).json({ message });
+  }
+}
+
+export async function skippedNumberStatus(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id)
+    const result = await skippedNumber(id);
+    return res.status(200).json({ message: "status:", data: result });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Gagal Skip Nomor";
     return res.status(400).json({ message });
   }
 }
