@@ -67,3 +67,8 @@ export async function skippedNumber(id: number) {
   })
   return updateStatus
 }
+
+export async function reset() {
+  const clearData = await prisma.queue.deleteMany()
+  return clearData
+}

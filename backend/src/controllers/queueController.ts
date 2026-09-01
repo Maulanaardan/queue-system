@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { takeQueue, getQueue, status, nextNumber, skippedNumber } from "../services/queueService";
+import { takeQueue, getQueue, status, nextNumber, skippedNumber, reset } from "../services/queueService";
 
 export async function createQueue(req: Request, res: Response) {
   try {
@@ -49,6 +49,16 @@ export async function skippedNumberStatus(req: Request, res: Response) {
     return res.status(200).json({ message: "status:", data: result });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Gagal Skip Nomor";
+    return res.status(400).json({ message });
+  }
+}
+
+export async function resetAll(req: Request, res: Response) {
+  try {
+    const result = await reset();
+    return res.status(200).json({ message: "semua data dihapus:", data: result });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "gagal reset data";
     return res.status(400).json({ message });
   }
 }
