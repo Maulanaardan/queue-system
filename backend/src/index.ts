@@ -1,8 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
 import authRoutes from "./routes/authRoute";
 import queueRoutes from "./routes/queueRoute";
 
 const app = express();
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
