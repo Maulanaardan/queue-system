@@ -35,7 +35,17 @@ export async function getQueue() {
 //lihat status nomor tertentu
 export async function status(id: number) {
   const statusNumber = await prisma.queue.findUnique({ where: { id } })
-  return statusNumber
+  const numberCalled = await prisma.queue.findFirst({
+  where: { queue_status: "called" },
+  select: { queue_number: true }
+})
+if (!statusNumber) {
+  throw new Error("Nomor antrian tidak ditemukan");
+}
+  return {
+    ...statusNumber,
+    currently_called_number: numberCalled?.queue_number ?? null
+  }
 }
 
 //next antrian
