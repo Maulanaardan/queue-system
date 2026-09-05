@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { QRCodeSVG } from "qrcode.react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -14,6 +15,7 @@ interface QueueData {
 }
 
 export default function AdminAntrianPage() {
+  const [showQR, setShowQR] = useState(false);
   const [queues, setQueues] = useState<QueueData[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -110,7 +112,17 @@ useEffect(() => {
       <div className="ad-actions">
         <button className="ad-btn-next" onClick={handleNext}>▶ Panggil Berikutnya</button>
         <button className="ad-btn-reset" onClick={handleReset}>↩ Reset Antrian</button>
+        <button className="ad-btn-qr" onClick={() => setShowQR(!showQR)}>
+          📱 {showQR ? "Sembunyikan QR" : "Tampilkan QR"}
+        </button>
       </div>
+
+      {showQR && (
+        <div className="ad-qr-container">
+          <p className="ad-qr-label">Scan untuk ambil nomor antrian</p>
+          <QRCodeSVG value="http://localhost:3000/antrian" size={200} />
+        </div>
+      )}
 
       <div className="ad-list">
         {queues.map((queue) => (
